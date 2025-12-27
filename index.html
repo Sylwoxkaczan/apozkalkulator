@@ -19,7 +19,7 @@ label {
   margin-top: 10px;
   display: block;
 }
-input, select {
+input[type="number"], select {
   width: 100%;
   padding: 8px;
   margin-top: 5px;
@@ -53,33 +53,63 @@ button:hover {
   color: red;
   margin-top: 10px;
 }
+
+/* mały odstęp pomiędzy selectem a powiązanym inputem */
+.select-with-input {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px;
+}
+.small-note {
+  font-size: 12px;
+  color: #666;
+}
 </style>
 </head>
 <body>
 
 <h1>Kalkulator punktów na studia strażackie</h1>
 
-<form id="calcForm">
-  <!-- Matematyka -->
-  <label>Matematyka (%):</label>
-  <input type="number" id="mathScore" min="0" max="100" required>
-  <label>Poziom:</label>
-  <select id="mathLevel">
-    <option value="0.5">Podstawowy</option>
-    <option value="1.0">Rozszerzony</option>
-  </select>
+<form id="calcForm" onsubmit="return false;">
 
-  <!-- Język obcy -->
-  <label>Język obcy (%):</label>
-  <input type="number" id="langScore" min="0" max="100" required>
-  <label>Poziom:</label>
-  <select id="langLevel">
-    <option value="0.5">Podstawowy</option>
-    <option value="1.0">Rozszerzony</option>
-    <option value="1.4">Dwujęzyczny</option>
-  </select>
+  <h2>Matematyka</h2>
+  <label>Podstawowa (%):</label>
+  <input type="number" id="mathBasic" min="0" max="100" placeholder="0-100">
 
-  <!-- 4 pola dla przedmiotów dodatkowych -->
+  <label>Rozszerzona:</label>
+  <div class="select-with-input">
+    <select id="mathAdvancedSelect" onchange="toggleCustomInput('mathAdvancedSelect','mathAdvancedInput')">
+      <option value="">-- Brak --</option>
+      <option value="custom">Wpisz procent...</option>
+    </select>
+    <input type="number" id="mathAdvancedInput" min="0" max="100" placeholder="Procent (0-100)" disabled>
+    <div class="small-note">Wybierz "-- Brak --" jeśli nie zdawałeś/zdawałaś rozszerzenia. Wybierz "Wpisz procent..." aby wpisać wynik.</div>
+  </div>
+
+  <h2>Język obcy</h2>
+  <label>Podstawowy (%):</label>
+  <input type="number" id="langBasic" min="0" max="100" placeholder="0-100">
+
+  <label>Rozszerzony:</label>
+  <div class="select-with-input">
+    <select id="langAdvancedSelect" onchange="toggleCustomInput('langAdvancedSelect','langAdvancedInput')">
+      <option value="">-- Brak --</option>
+      <option value="custom">Wpisz procent...</option>
+    </select>
+    <input type="number" id="langAdvancedInput" min="0" max="100" placeholder="Procent (0-100)" disabled>
+  </div>
+
+  <label>Dwujęzyczny:</label>
+  <div class="select-with-input">
+    <select id="langBilingualSelect" onchange="toggleCustomInput('langBilingualSelect','langBilingualInput')">
+      <option value="">-- Brak --</option>
+      <option value="custom">Wpisz procent...</option>
+    </select>
+    <input type="number" id="langBilingualInput" min="0" max="100" placeholder="Procent (0-100)" disabled>
+  </div>
+
+  <h2>Przedmioty dodatkowe</h2>
+
   <label>Przedmiot dodatkowy 1:</label>
   <select class="extraSubject" onchange="updateOptions()">
     <option value="">-- Brak --</option>
@@ -127,7 +157,6 @@ button:hover {
 <div class="result" id="result"></div>
 
 <script>
-// Wagi przedmiotów
 const weights = {
   matematyka: 1.0,
   jezyk: 0.5,
@@ -137,7 +166,7 @@ const weights = {
   informatyka: 0.7
 };
 
-// Funkcja aktywująca pole procentowe i blokująca duplikaty
+// Funkcja aktywująca pole procentowe i blokująca duplikaty dla przedmiotów dodatkowych
 function updateOptions() {
   const selects = document.querySelectorAll('.extraSubject');
   const scores = document.querySelectorAll('.extraScore');
@@ -148,7 +177,6 @@ function updateOptions() {
     chosen[i] = sel.value;
   });
 
-  // Blokowanie opcji, które już zostały wybrane
   selects.forEach((sel, i) => {
     const currentValue = sel.value;
     for (let option of sel.options) {
@@ -161,27 +189,73 @@ function updateOptions() {
   });
 }
 
+// Włącza/wyłącza powiązane pole input przy wybraniu "Wpisz procent..."
+function toggleCustomInput(selectId, inputId) {
+  const sel = document.getElementById(selectId);
+  const input = document.getElementById(inputId);
+  if (!sel || !input) return;
+  input.disabled = sel.value !== 'custom';
+  if (input.disabled) {
+    input.value = "";
+  } else {
+    input.focus();
+  }
+}
+
+function validatePercent(value) {
+  return !(isNaN(value) || value < 0 || value > 100);
+}
+
 function calculatePoints() {
   document.getElementById("errorMsg").innerText = "";
   document.getElementById("result").innerText = "";
 
   // Matematyka
-  const mathScore = parseFloat(document.getElementById("mathScore").value);
-  const mathLevel = parseFloat(document.getElementById("mathLevel").value);
-  if(isNaN(mathScore) || mathScore < 0 || mathScore > 100) {
-    document.getElementById("errorMsg").innerText = "Proszę wpisać poprawny wynik matematyki (0-100).";
-    return;
+  const mathBasic = parseFloat(document.getElementById("mathBasic").value) || 0;
+
+  const mathAdvSel = document.getElementById("mathAdvancedSelect").value;
+  const mathAdvancedInput = document.getElementById("mathAdvancedInput").value;
+  let mathAdvanced = 0;
+  if (mathAdvSel === 'custom') {
+    mathAdvanced = parseFloat(mathAdvancedInput);
+    if (!validatePercent(mathAdvanced)) {
+      document.getElementById("errorMsg").innerText = "Proszę wpisać poprawny wynik dla matematyki rozszerzonej (0-100).";
+      return;
+    }
   }
-  const mathPoints = mathScore * mathLevel * weights.matematyka;
+
+  const mathPoints = Math.max(mathBasic * 0.5, mathAdvanced * 1.0) * weights.matematyka;
 
   // Język obcy
-  const langScore = parseFloat(document.getElementById("langScore").value);
-  const langLevel = parseFloat(document.getElementById("langLevel").value);
-  if(isNaN(langScore) || langScore < 0 || langScore > 100) {
-    document.getElementById("errorMsg").innerText = "Proszę wpisać poprawny wynik języka obcego (0-100).";
-    return;
+  const langBasic = parseFloat(document.getElementById("langBasic").value) || 0;
+
+  const langAdvSel = document.getElementById("langAdvancedSelect").value;
+  const langAdvancedInput = document.getElementById("langAdvancedInput").value;
+  let langAdvanced = 0;
+  if (langAdvSel === 'custom') {
+    langAdvanced = parseFloat(langAdvancedInput);
+    if (!validatePercent(langAdvanced)) {
+      document.getElementById("errorMsg").innerText = "Proszę wpisać poprawny wynik dla języka obcego (rozszerzony) (0-100).";
+      return;
+    }
   }
-  const langPoints = langScore * weights.jezyk * langLevel;
+
+  const langBilSel = document.getElementById("langBilingualSelect").value;
+  const langBilingualInput = document.getElementById("langBilingualInput").value;
+  let langBilingual = 0;
+  if (langBilSel === 'custom') {
+    langBilingual = parseFloat(langBilingualInput);
+    if (!validatePercent(langBilingual)) {
+      document.getElementById("errorMsg").innerText = "Proszę wpisać poprawny wynik dla języka dwujęzycznego (0-100).";
+      return;
+    }
+  }
+
+  const langPoints = Math.max(
+    langBasic * 0.5,
+    langAdvanced * 1.0,
+    langBilingual * 1.4
+  ) * weights.jezyk;
 
   // Przedmioty dodatkowe
   const selects = document.querySelectorAll('.extraSubject');
@@ -200,7 +274,6 @@ function calculatePoints() {
     }
   }
 
-  // Wybór przedmiotu, który daje najwięcej punktów
   let extraPoints = 0;
   let bestExtra = "";
   if(extraPointsArray.length > 0) {
@@ -211,13 +284,10 @@ function calculatePoints() {
 
   const total = mathPoints + langPoints + extraPoints;
 
-  // Wyświetlenie wyników
-  let resultText = "Punkty z matematyki: " + mathPoints.toFixed(2) + "\n";
-  resultText += "Punkty z języka obcego: " + langPoints.toFixed(2) + "\n";
-  if(bestExtra !== "") {
-    resultText += "Punkty z " + bestExtra + ": " + extraPoints.toFixed(2) + "\n";
-  }
-  resultText += "Łączna liczba punktów: " + total.toFixed(2);
+  let resultText = `Punkty z matematyki: ${mathPoints.toFixed(2)}\n`;
+  resultText += `Punkty z języka obcego: ${langPoints.toFixed(2)}\n`;
+  if(bestExtra !== "") resultText += `Punkty z ${bestExtra}: ${extraPoints.toFixed(2)}\n`;
+  resultText += `Łączna liczba punktów: ${total.toFixed(2)}`;
 
   document.getElementById("result").innerText = resultText;
 }
