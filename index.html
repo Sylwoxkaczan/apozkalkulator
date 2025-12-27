@@ -96,20 +96,46 @@ body{
           </div>
 
           <div class="label">Przedmiot dodatkowy (Wymagany co najmniej jeden)</div>
-          <div class="extra-row"><select class="input extraSubject" onchange="updateOptions()"><option value="">-- Wybierz przedmiot --</option><option value="fizyka">Fizyka</option><option value="chemia">Chemia</option><option value="informatyka">Informatyka</option><option value="biologia">Biologia</option></select><input class="input extraScore" type="number" min="0" max="100" step="0.01" disabled placeholder="%"></div>
-          <div class="extra-row"><select class="input extraSubject" onchange="updateOptions()"><option value="">-- Wybierz przedmiot --</option><option value="fizyka">Fizyka</option><option value="chemia">Chemia</option><option value="informatyka">Informatyka</option><option value="biologia">Biologia</option></select><input class="input extraScore" type="number" min="0" max="100" step="0.01" disabled placeholder="%"></div>
-          <div class="extra-row"><select class="input extraSubject" onchange="updateOptions()"><option value="">-- Wybierz przedmiot --</option><option value="fizyka">Fizyka</option><option value="chemia">Chemia</option><option value="informatyka">Informatyka</option><option value="biologia">Biologia</option></select><input class="input extraScore" type="number" min="0" max="100" step="0.01" disabled placeholder="%"></div>
-          <div class="extra-row"><select class="input extraSubject" onchange="updateOptions()"><option value="">-- Wybierz przedmiot --</option><option value="fizyka">Fizyka</option><option value="chemia">Chemia</option><option value="informatyka">Informatyka</option><option value="biologia">Biologia</option></select><input class="input extraScore" type="number" min="0" max="100" step="0.01" disabled placeholder="%"></div>
+          <div class="extra-row">
+            <select class="input extraSubject" onchange="updateOptions()">
+              <option value="">-- Wybierz przedmiot --</option>
+              <option value="fizyka">Fizyka</option>
+              <option value="chemia">Chemia</option>
+              <option value="informatyka">Informatyka</option>
+              <option value="biologia">Biologia</option>
+            </select>
+            <input class="input extraScore" type="number" min="0" max="100" step="0.01" disabled placeholder="%">
+          </div>
+          <div class="extra-row">
+            <select class="input extraSubject" onchange="updateOptions()">
+              <option value="">-- Wybierz przedmiot --</option>
+              <option value="fizyka">Fizyka</option>
+              <option value="chemia">Chemia</option>
+              <option value="informatyka">Informatyka</option>
+              <option value="biologia">Biologia</option>
+            </select>
+            <input class="input extraScore" type="number" min="0" max="100" step="0.01" disabled placeholder="%">
+          </div>
+          <div class="extra-row">
+            <select class="input extraSubject" onchange="updateOptions()">
+              <option value="">-- Wybierz przedmiot --</option>
+              <option value="fizyka">Fizyka</option>
+              <option value="chemia">Chemia</option>
+              <option value="informatyka">Informatyka</option>
+              <option value="biologia">Biologia</option>
+            </select>
+            <input class="input extraScore" type="number" min="0" max="100" step="0.01" disabled placeholder="%">
+          </div>
 
           <button class="btn" type="button" onclick="calculatePoints()">Oblicz punkty</button>
           <div id="errorMsg" class="error"></div>
           <div id="result" class="result"></div>
 
           <div class="legend">
-            <strong>Zasady punktacji:</strong> Wynik końcowy to suma punktów z trzech obowiązkowych bloków: Matematyki, Języka obcego oraz jednego Przedmiotu dodatkowego.
-            <strong>Matematyka:</strong> wyższa z wartości: podstawa × 0.5 lub rozszerzenie × 1.0. 
-            <strong>Język obcy:</strong> wynik z poziomu (podstawa × 0.5, rozszerzenie × 1.0 lub dwujęzyczny × 1.4) mnożony przez wagę 0.5. 
-            <strong>Przedmioty dodatkowe:</strong> pod uwagę brany jest najlepszy wynik spośród wybranych, przemnożony przez wagę (Fizyka 0.9, Chemia 0.8, Informatyka 0.7, Biologia 0.6).
+            <strong>Zasady punktacji:</strong> Wynik końcowy to suma trzech bloków. Aby kandydować, musisz posiadać zdaną maturę (min. 30% z podstaw).<br>
+            <strong>Matematyka:</strong> wyższa z wartości: podstawa × 0.5 lub rozszerzenie × 1.0. <br>
+            <strong>Język obcy:</strong> wynik z poziomu (podstawa × 0.5, rozszerzenie × 1.0 lub dwujęzyczny × 1.4) mnożony przez wagę 0.5. <br>
+            <strong>Przedmioty dodatkowe:</strong> najlepszy wynik spośród wybranych × waga (Fizyka 0.9, Chemia 0.8, Informatyka 0.7, Biologia 0.6).
           </div>
         </div>
       </form>
@@ -144,12 +170,30 @@ function calculatePoints() {
   resultDiv.innerText = "";
 
   // Pobieranie danych
-  const mB = parseFloat(document.getElementById("mathBasic").value) || 0;
-  const mA = parseFloat(document.getElementById("mathAdvancedInput").value) || 0;
+  const mBVal = document.getElementById("mathBasic").value;
+  const lBVal = document.getElementById("langBasic").value;
   
-  const lB = parseFloat(document.getElementById("langBasic").value) || 0;
+  const mB = mBVal === "" ? null : parseFloat(mBVal);
+  const mA = parseFloat(document.getElementById("mathAdvancedInput").value) || 0;
+  const lB = lBVal === "" ? null : parseFloat(lBVal);
   const lA = parseFloat(document.getElementById("langAdvancedInput").value) || 0;
   const lD = parseFloat(document.getElementById("langBilingualInput").value) || 0;
+
+  // Walidacja - czy pola podstawowe są wypełnione
+  if (mB === null || lB === null) {
+    errorDiv.innerText = "Błąd: Wprowadź wyniki z podstawowej matematyki i języka obcego.";
+    return;
+  }
+
+  // Walidacja - czy matura jest zdana (minimum 30%)
+  if (mB < 30) {
+    errorDiv.innerText = "Błąd: Wynik z matematyki podstawowej poniżej 30% oznacza niezdany egzamin.";
+    return;
+  }
+  if (lB < 30) {
+    errorDiv.innerText = "Błąd: Wynik z języka obcego podstawowego poniżej 30% oznacza niezdany egzamin.";
+    return;
+  }
 
   let extras = [];
   const selects = document.querySelectorAll('.extraSubject');
@@ -161,18 +205,20 @@ function calculatePoints() {
     }
   });
 
-  // Walidacja - musi być co najmniej jeden przedmiot dodatkowy z wynikiem
+  // Walidacja - przedmiot dodatkowy
   if (extras.length === 0) {
     errorDiv.innerText = "Błąd: Musisz wybrać i wpisać wynik z co najmniej jednego przedmiotu dodatkowego!";
     return;
   }
 
+  // Obliczenia
   const mathPoints = Math.max(mB * 0.5, mA * 1.0);
   const langPoints = Math.max(lB * 0.5, lA * 1.0, lD * 1.4) * weights.jezyk;
   const bestExtra = Math.max(...extras);
 
   const total = mathPoints + langPoints + bestExtra;
-  resultDiv.innerText = `Matematyka: ${mathPoints.toFixed(2)}\nJęzyk obcy: ${langPoints.toFixed(2)}\nPrzedmiot dodatkowy: ${bestExtra.toFixed(2)}\n\nSuma punktów: ${total.toFixed(2)}`;
+  
+  resultDiv.innerText = `Matematyka: ${mathPoints.toFixed(2)} pkt\nJęzyk obcy: ${langPoints.toFixed(2)} pkt\nPrzedmiot dodatkowy: ${bestExtra.toFixed(2)} pkt\n\nSUMA KOŃCOWA: ${total.toFixed(2)} pkt`;
 }
 
 window.addEventListener('DOMContentLoaded', updateOptions);
