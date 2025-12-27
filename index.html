@@ -172,7 +172,7 @@ body{
           <!-- Matematyka -->
           <div class="row">
             <div class="label">Matematyka — Podstawowa (%)</div>
-            <input class="input" type="number" id="mathBasic" min="0" max="100" step="0.01" placeholder="np. 76.5">
+            <input class="input" type="number" id="mathBasic" min="0" max="100" step="0.01">
           </div>
 
           <div class="row">
@@ -182,7 +182,7 @@ body{
                 <option value="">-- Brak --</option>
                 <option value="custom">Wpisz procent...</option>
               </select>
-              <input class="input" type="number" id="mathAdvancedInput" min="0" max="100" step="0.01" placeholder="Procent (0-100)" disabled>
+              <input class="input" type="number" id="mathAdvancedInput" min="0" max="100" step="0.01" disabled>
               <div class="small-note">Jeśli nie zdawałeś/zdawałaś rozszerzenia zostaw "-- Brak --".</div>
             </div>
           </div>
@@ -191,7 +191,7 @@ body{
           <div class="row horizontal">
             <div>
               <div class="label">Język obcy — Podstawowy (%)</div>
-              <input class="input" type="number" id="langBasic" min="0" max="100" step="0.01" placeholder="np. 85">
+              <input class="input" type="number" id="langBasic" min="0" max="100" step="0.01">
             </div>
             <div>
               <div class="label">Język obcy — Rozszerzony</div>
@@ -199,7 +199,7 @@ body{
                 <option value="">-- Brak --</option>
                 <option value="custom">Wpisz procent...</option>
               </select>
-              <input class="input" type="number" id="langAdvancedInput" min="0" max="100" step="0.01" placeholder="Procent (0-100)" disabled style="margin-top:8px">
+              <input class="input" type="number" id="langAdvancedInput" min="0" max="100" step="0.01" disabled style="margin-top:8px">
             </div>
           </div>
 
@@ -209,7 +209,7 @@ body{
               <option value="">-- Brak --</option>
               <option value="custom">Wpisz procent...</option>
             </select>
-            <input class="input" type="number" id="langBilingualInput" min="0" max="100" step="0.01" placeholder="Procent (0-100)" disabled style="margin-top:8px">
+            <input class="input" type="number" id="langBilingualInput" min="0" max="100" step="0.01" disabled style="margin-top:8px">
           </div>
 
           <!-- Przedmioty dodatkowe -->
@@ -223,7 +223,7 @@ body{
               <option value="informatyka">Informatyka</option>
               <option value="biologia">Biologia</option>
             </select>
-            <input class="input extraScore" type="number" min="0" max="100" step="0.01" placeholder="Procent" disabled>
+            <input class="input extraScore" type="number" min="0" max="100" step="0.01" disabled>
           </div>
 
           <div class="extra-row">
@@ -234,7 +234,7 @@ body{
               <option value="informatyka">Informatyka</option>
               <option value="biologia">Biologia</option>
             </select>
-            <input class="input extraScore" type="number" min="0" max="100" step="0.01" placeholder="Procent" disabled>
+            <input class="input extraScore" type="number" min="0" max="100" step="0.01" disabled>
           </div>
 
           <div class="extra-row">
@@ -245,7 +245,7 @@ body{
               <option value="informatyka">Informatyka</option>
               <option value="biologia">Biologia</option>
             </select>
-            <input class="input extraScore" type="number" min="0" max="100" step="0.01" placeholder="Procent" disabled>
+            <input class="input extraScore" type="number" min="0" max="100" step="0.01" disabled>
           </div>
 
           <div class="extra-row">
@@ -256,7 +256,7 @@ body{
               <option value="informatyka">Informatyka</option>
               <option value="biologia">Biologia</option>
             </select>
-            <input class="input extraScore" type="number" min="0" max="100" step="0.01" placeholder="Procent" disabled>
+            <input class="input extraScore" type="number" min="0" max="100" step="0.01" disabled>
           </div>
 
           <button class="btn" type="button" onclick="calculatePoints()">Oblicz punkty</button>
@@ -265,7 +265,7 @@ body{
           <div id="result" class="result" aria-live="polite"></div>
 
           <div class="legend">
-            Reguła: matematyka — maksimum z podstawy*0.5 oraz rozszerzenia*1.0; język — maksimum z podstawy*0.5, rozszerzenia*1.0, dwujęzycznego*1.4. Z przedmiotów dodatkowych brany jest ten, który daje najwięcej punktów.
+            Reguła: matematyka — maksimum z podstawy*0.5 oraz rozszerzenia*1.0; język — maksimum z podstawy*0.5, rozszerzenia*1.0, dwujęzycznego*1.4. Z przedmiotów dodatkowych brany jest [...]
           </div>
         </div>
       </form>
