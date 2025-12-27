@@ -15,6 +15,8 @@
   --primary-600:#1e40af;
   --muted:#6b7280;
   --accent:#e6f0ff;
+  --success-bg:#f0fdf4;
+  --success-text:#166534;
   --radius:12px;
   --max-width:760px;
 }
@@ -44,8 +46,14 @@ body{
 .btn { display:inline-block; width:100%; padding:12px 14px; background:var(--primary); color:white; font-weight:600; border-radius:10px; border:none; cursor:pointer; font-size:16px; margin-top:6px; }
 .btn:hover { background:var(--primary-600); }
 .result { margin-top:14px; padding:12px; border-radius:8px; background:var(--accent); border:1px solid rgba(37,99,235,0.12); font-weight:600; white-space:pre-line; }
-.error { color:#b91c1c; margin-top:8px; font-size:13px; font-weight:600; }
+.comparison { margin-top:10px; padding:12px; border-radius:8px; background:var(--success-bg); color:var(--success-text); font-size:13px; border:1px solid #dcfce7; display:none; }
+.error { color:#b91c1c; margin-top:12px; padding:10px; background:#fef2f2; border-radius:6px; border:1px solid #fee2e2; font-size:13px; font-weight:600; display:none; }
 .legend { margin-top:16px; font-size:12px; color:var(--muted); line-height: 1.5; border-top: 1px solid #f1f5f9; padding-top: 12px; }
+
+.stats-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 13px; }
+.stats-table th, .stats-table td { padding: 8px; border-bottom: 1px solid #f1f5f9; text-align: left; }
+.stats-table th { color: var(--muted); font-weight: 600; }
+.stats-header { font-size: 14px; font-weight: 700; margin-top: 20px; color: #334155; }
 </style>
 </head>
 <body>
@@ -58,10 +66,12 @@ body{
     <section class="card">
       <form id="calcForm" onsubmit="return false;">
         <div class="form-grid">
+          
           <div class="row">
             <div class="label">Matematyka — Podstawowa (%)</div>
             <input class="input" type="number" id="mathBasic" min="0" max="100" step="0.01" placeholder="Wynik matury">
           </div>
+          
           <div class="row">
             <div class="label">Matematyka — Rozszerzona</div>
             <select class="input" id="mathAdvancedSelect" onchange="toggleCustomInput('mathAdvancedSelect','mathAdvancedInput')">
@@ -128,14 +138,44 @@ body{
           </div>
 
           <button class="btn" type="button" onclick="calculatePoints()">Oblicz punkty</button>
+          
           <div id="errorMsg" class="error"></div>
-          <div id="result" class="result"></div>
+          <div id="result" class="result" style="display:none;"></div>
+          <div id="comparisonMsg" class="comparison"></div>
+
+          <div class="stats-header">Statystyki rekrutacji (na podstawie danych APoż)</div>
+          <table class="stats-table">
+            <thead>
+              <tr>
+                <th>Rok</th>
+                <th>Lista podstawowa</th>
+                <th>Ostatnia osoba przyjęta</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>2025</td>
+                <td>118,5 pkt</td>
+                <td>96,8 pkt</td>
+              </tr>
+              <tr>
+                <td>2024</td>
+                <td>117,0 pkt</td>
+                <td>105,25 pkt</td>
+              </tr>
+              <tr>
+                <td>2023</td>
+                <td>112,4 pkt</td>
+                <td>101,5 pkt</td>
+              </tr>
+            </tbody>
+          </table>
 
           <div class="legend">
-            <strong>Zasady punktacji:</strong> Wynik końcowy to suma trzech bloków. Aby kandydować, musisz posiadać zdaną maturę (min. 30% z podstaw).<br>
-            <strong>Matematyka:</strong> wyższa z wartości: podstawa × 0.5 lub rozszerzenie × 1.0. <br>
-            <strong>Język obcy:</strong> wynik z poziomu (podstawa × 0.5, rozszerzenie × 1.0 lub dwujęzyczny × 1.4) mnożony przez wagę 0.5. <br>
-            <strong>Przedmioty dodatkowe:</strong> najlepszy wynik spośród wybranych × waga (Fizyka 0.9, Chemia 0.8, Informatyka 0.7, Biologia 0.6).
+            <strong>Zasady punktacji:</strong> Aby kandydować, musisz mieć min. 30% z podstawy.<br>
+            <strong>Matematyka:</strong> max(podstawa × 0.5, rozszerzenie × 1.0). <br>
+            <strong>Język obcy:</strong> max(podstawa × 0.5, rozszerzenie × 1.0, dwujęzyczny × 1.4) × 0.5. <br>
+            <strong>Przedmioty dodatkowe:</strong> Najlepszy z wybranych × waga (Fizyka 0.9, Chemia 0.8, Informatyka 0.7, Biologia 0.6).
           </div>
         </div>
       </form>
@@ -144,6 +184,11 @@ body{
 
 <script>
 const weights = { matematyka: 1.0, jezyk: 0.5, chemia: 0.8, fizyka: 0.9, biologia: 0.6, informatyka: 0.7 };
+const historicalData = [
+  { rok: 2025, podstawa: 118.5, ostatnia: 96.8 },
+  { rok: 2024, podstawa: 117.0, ostatnia: 105.25 },
+  { rok: 2023, podstawa: 112.4, ostatnia: 101.5 }
+];
 
 function updateOptions() {
   const selects = document.querySelectorAll('.extraSubject');
@@ -166,59 +211,70 @@ function toggleCustomInput(sId, iId) {
 function calculatePoints() {
   const errorDiv = document.getElementById("errorMsg");
   const resultDiv = document.getElementById("result");
-  errorDiv.innerText = "";
-  resultDiv.innerText = "";
+  const compDiv = document.getElementById("comparisonMsg");
+  
+  errorDiv.style.display = "none";
+  resultDiv.style.display = "none";
+  compDiv.style.display = "none";
 
-  // Pobieranie danych
   const mBVal = document.getElementById("mathBasic").value;
   const lBVal = document.getElementById("langBasic").value;
   
-  const mB = mBVal === "" ? null : parseFloat(mBVal);
+  if (mBVal === "" || lBVal === "") {
+    errorDiv.innerText = "Błąd: Wpisz wyniki z podstawowej matematyki i języka obcego.";
+    errorDiv.style.display = "block";
+    return;
+  }
+
+  const mB = parseFloat(mBVal);
+  const lB = parseFloat(lBVal);
   const mA = parseFloat(document.getElementById("mathAdvancedInput").value) || 0;
-  const lB = lBVal === "" ? null : parseFloat(lBVal);
   const lA = parseFloat(document.getElementById("langAdvancedInput").value) || 0;
   const lD = parseFloat(document.getElementById("langBilingualInput").value) || 0;
 
-  // Walidacja - czy pola podstawowe są wypełnione
-  if (mB === null || lB === null) {
-    errorDiv.innerText = "Błąd: Wprowadź wyniki z podstawowej matematyki i języka obcego.";
-    return;
-  }
-
-  // Walidacja - czy matura jest zdana (minimum 30%)
-  if (mB < 30) {
-    errorDiv.innerText = "Błąd: Wynik z matematyki podstawowej poniżej 30% oznacza niezdany egzamin.";
-    return;
-  }
-  if (lB < 30) {
-    errorDiv.innerText = "Błąd: Wynik z języka obcego podstawowego poniżej 30% oznacza niezdany egzamin.";
+  if (mB < 30 || lB < 30) {
+    errorDiv.innerText = "Błąd: Wynik poniżej 30% oznacza niezdany egzamin.";
+    errorDiv.style.display = "block";
     return;
   }
 
   let extras = [];
-  const selects = document.querySelectorAll('.extraSubject');
-  const scores = document.querySelectorAll('.extraScore');
-  
-  selects.forEach((sel, i) => {
-    if(sel.value && scores[i].value !== "") {
-      extras.push(parseFloat(scores[i].value) * weights[sel.value]);
-    }
+  document.querySelectorAll('.extraSubject').forEach((sel, i) => {
+    const score = document.querySelectorAll('.extraScore')[i].value;
+    if(sel.value && score !== "") extras.push(parseFloat(score) * weights[sel.value]);
   });
 
-  // Walidacja - przedmiot dodatkowy
   if (extras.length === 0) {
-    errorDiv.innerText = "Błąd: Musisz wybrać i wpisać wynik z co najmniej jednego przedmiotu dodatkowego!";
+    errorDiv.innerText = "Błąd: Musisz wybrać przedmiot dodatkowy!";
+    errorDiv.style.display = "block";
     return;
   }
 
-  // Obliczenia
   const mathPoints = Math.max(mB * 0.5, mA * 1.0);
   const langPoints = Math.max(lB * 0.5, lA * 1.0, lD * 1.4) * weights.jezyk;
   const bestExtra = Math.max(...extras);
-
   const total = mathPoints + langPoints + bestExtra;
   
   resultDiv.innerText = `Matematyka: ${mathPoints.toFixed(2)} pkt\nJęzyk obcy: ${langPoints.toFixed(2)} pkt\nPrzedmiot dodatkowy: ${bestExtra.toFixed(2)} pkt\n\nSUMA KOŃCOWA: ${total.toFixed(2)} pkt`;
+  resultDiv.style.display = "block";
+
+  // Porównanie z historią
+  let yearsPassedPodstawa = historicalData.filter(d => total >= d.podstawa).map(d => d.rok);
+  let yearsPassedOstatnia = historicalData.filter(d => total >= d.ostatnia && total < d.podstawa).map(d => d.rok);
+
+  let msg = "<strong>Twoje szanse na podstawie historii:</strong><br>";
+  if (yearsPassedPodstawa.length > 0) {
+    msg += `✅ Dostałbyś się z listy podstawowej w: ${yearsPassedPodstawa.join(", ")}.<br>`;
+  }
+  if (yearsPassedOstatnia.length > 0) {
+    msg += `⏳ Byłbyś na liście rezerwowej (przyjęty) w: ${yearsPassedOstatnia.join(", ")}.<br>`;
+  }
+  if (yearsPassedPodstawa.length === 0 && yearsPassedOstatnia.length === 0) {
+    msg += "❌ Twój wynik jest niższy niż progi z ostatnich 3 lat.";
+  }
+  
+  compDiv.innerHTML = msg;
+  compDiv.style.display = "block";
 }
 
 window.addEventListener('DOMContentLoaded', updateOptions);
