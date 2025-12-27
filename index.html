@@ -173,9 +173,9 @@ body{
 
           <div class="legend">
             <strong>Zasady punktacji:</strong> Aby kandydować, musisz mieć min. 30% z podstawy.<br>
-            <strong>Matematyka:</strong> max(podstawa × 0.5, rozszerzenie × 1.0). <br>
-            <strong>Język obcy:</strong> max(podstawa × 0.5, rozszerzenie × 1.0, dwujęzyczny × 1.4) × 0.5. <br>
-            <strong>Przedmioty dodatkowe:</strong> Najlepszy z wybranych × waga (Fizyka 0.9, Chemia 0.8, Informatyka 0.7, Biologia 0.6).
+            <strong>Matematyka:</strong> Wybierana jest najkorzystniejsza punktacja z wariantów: podstawa × 0.5 lub rozszerzenie × 1.0.<br>
+            <strong>Język obcy:</strong> Wybierana jest najkorzystniejsza punktacja z poziomów (podstawa × 0.5, rozszerzenie × 1.0 lub dwujęzyczny × 1.4) mnożona przez wagę 0.5.<br>
+            <strong>Przedmioty dodatkowe:</strong> Brany jest pod uwagę najkorzystniejszy wynik spośród wybranych × waga (Fizyka 0.9, Chemia 0.8, Informatyka 0.7, Biologia 0.6).
           </div>
         </div>
       </form>
@@ -258,7 +258,6 @@ function calculatePoints() {
   resultDiv.innerText = `Matematyka: ${mathPoints.toFixed(2)} pkt\nJęzyk obcy: ${langPoints.toFixed(2)} pkt\nPrzedmiot dodatkowy: ${bestExtra.toFixed(2)} pkt\n\nSUMA KOŃCOWA: ${total.toFixed(2)} pkt`;
   resultDiv.style.display = "block";
 
-  // Porównanie z historią
   let yearsPassedPodstawa = historicalData.filter(d => total >= d.podstawa).map(d => d.rok);
   let yearsPassedOstatnia = historicalData.filter(d => total >= d.ostatnia && total < d.podstawa).map(d => d.rok);
 
