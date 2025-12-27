@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Kalkulator punktów - Wersja V2</title>
+<title>Kalkulator punktów do Akademii Pożarniczej w Warszawie</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
@@ -18,147 +18,41 @@
   --radius:12px;
   --max-width:760px;
 }
-
-/* Reset & base */
 *{box-sizing:border-box}
 body{
   font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
   margin:0;
   background: linear-gradient(180deg,var(--bg),#ffffff 60%);
   color:#0f172a;
-  -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
   padding:28px 16px;
   display:flex;
   justify-content:center;
 }
-
-.app {
-  width:100%;
-  max-width:var(--max-width);
-  margin:0 auto;
-  padding:28px;
-}
-
-.header {
-  text-align:center;
-  margin-bottom:18px;
-}
-.title {
-  font-size:20px;
-  font-weight:700;
-  margin:0;
-}
-.subtitle {
-  color:var(--muted);
-  font-size:13px;
-  margin-top:6px;
-}
-
-.card {
-  background:var(--card);
-  border-radius:var(--radius);
-  padding:20px;
-  box-shadow: 0 8px 30px rgba(15, 23, 42, 0.06);
-  border: 1px solid rgba(15,23,42,0.04);
-}
-
-.form-grid {
-  display:grid;
-  gap:12px;
-}
-.row {
-  display:grid;
-  gap:8px;
-}
-.row.horizontal {
-  grid-template-columns: 1fr 1fr;
-  gap:12px;
-  align-items:center;
-}
-.label {
-  font-size:13px;
-  color:var(--muted);
-  font-weight:600;
-}
-.input, select {
-  width:100%;
-  padding:10px 12px;
-  font-size:15px;
-  border-radius:8px;
-  border:1px solid #e6e9ef;
-  background:#fff;
-  outline:none;
-  transition:box-shadow .12s, border-color .12s;
-}
-.input:focus, select:focus {
-  border-color:var(--primary);
-  box-shadow:0 4px 14px rgba(37,99,235,0.12);
-}
-
-.small-note {
-  font-size:12px;
-  color:var(--muted);
-  margin-top:4px;
-}
-
-.extra-row {
-  display:grid;
-  grid-template-columns: 1fr 120px;
-  gap:10px;
-  align-items:center;
-}
-@media (max-width:520px){
-  .row.horizontal { grid-template-columns: 1fr; }
-  .extra-row { grid-template-columns: 1fr; }
-}
-
-.btn {
-  display:inline-block;
-  width:100%;
-  padding:12px 14px;
-  background:var(--primary);
-  color:white;
-  font-weight:600;
-  border-radius:10px;
-  border:none;
-  cursor:pointer;
-  font-size:16px;
-  margin-top:6px;
-}
+.app { width:100%; max-width:var(--max-width); margin:0 auto; padding:28px; }
+.header { text-align:center; margin-bottom:18px; }
+.title { font-size:20px; font-weight:700; margin:0; }
+.subtitle { color:var(--muted); font-size:13px; margin-top:6px; }
+.card { background:var(--card); border-radius:var(--radius); padding:20px; box-shadow: 0 8px 30px rgba(15, 23, 42, 0.06); border: 1px solid rgba(15,23,42,0.04); }
+.form-grid { display:grid; gap:12px; }
+.row { display:grid; gap:8px; }
+.row.horizontal { grid-template-columns: 1fr 1fr; gap:12px; align-items:center; }
+.label { font-size:13px; color:var(--muted); font-weight:600; }
+.input, select { width:100%; padding:10px 12px; font-size:15px; border-radius:8px; border:1px solid #e6e9ef; background:#fff; outline:none; transition:box-shadow .12s, border-color .12s; }
+.input:focus, select:focus { border-color:var(--primary); box-shadow:0 4px 14px rgba(37,99,235,0.12); }
+.extra-row { display:grid; grid-template-columns: 1fr 120px; gap:10px; align-items:center; margin-bottom: 8px; }
+@media (max-width:520px){ .row.horizontal { grid-template-columns: 1fr; } .extra-row { grid-template-columns: 1fr; } }
+.btn { display:inline-block; width:100%; padding:12px 14px; background:var(--primary); color:white; font-weight:600; border-radius:10px; border:none; cursor:pointer; font-size:16px; margin-top:6px; }
 .btn:hover { background:var(--primary-600); }
-
-.result {
-  margin-top:14px;
-  padding:12px;
-  border-radius:8px;
-  background:var(--accent);
-  border:1px solid rgba(37,99,235,0.12);
-  font-weight:600;
-  white-space:pre-line;
-}
-.error {
-  color:#b91c1c;
-  margin-top:8px;
-  font-weight:600;
-}
-
-.legend {
-  margin-top:16px;
-  font-size:12px;
-  color:var(--muted);
-  line-height: 1.5;
-  border-top: 1px solid #f1f5f9;
-  padding-top: 12px;
-  /* Usunięto white-space: pre-line, aby tekst płynął naturalnie */
-}
+.result { margin-top:14px; padding:12px; border-radius:8px; background:var(--accent); border:1px solid rgba(37,99,235,0.12); font-weight:600; white-space:pre-line; }
+.error { color:#b91c1c; margin-top:8px; font-size:13px; font-weight:600; }
+.legend { margin-top:16px; font-size:12px; color:var(--muted); line-height: 1.5; border-top: 1px solid #f1f5f9; padding-top: 12px; }
 </style>
 </head>
 <body>
   <main class="app">
     <header class="header">
-      <h1 class="title">Kalkulator punktów na studia strażackie</h1>
-      <div class="subtitle">Wpisz wyniki procentowe — wersja z poprawioną legendą</div>
+      <h1 class="title">Kalkulator punktów do Akademii Pożarniczej w Warszawie</h1>
+      <div class="subtitle">Zgodny z aktualnymi zasadami rekrutacji</div>
     </header>
 
     <section class="card">
@@ -166,24 +60,21 @@ body{
         <div class="form-grid">
           <div class="row">
             <div class="label">Matematyka — Podstawowa (%)</div>
-            <input class="input" type="number" id="mathBasic" min="0" max="100" step="0.01" placeholder="Twój wynik">
+            <input class="input" type="number" id="mathBasic" min="0" max="100" step="0.01" placeholder="Wynik matury">
           </div>
-
           <div class="row">
             <div class="label">Matematyka — Rozszerzona</div>
-            <div style="display:grid;gap:8px">
-              <select class="input" id="mathAdvancedSelect" onchange="toggleCustomInput('mathAdvancedSelect','mathAdvancedInput')">
-                <option value="">-- Brak --</option>
-                <option value="custom">Wpisz procent...</option>
-              </select>
-              <input class="input" type="number" id="mathAdvancedInput" min="0" max="100" step="0.01" disabled placeholder="Twój wynik">
-            </div>
+            <select class="input" id="mathAdvancedSelect" onchange="toggleCustomInput('mathAdvancedSelect','mathAdvancedInput')">
+              <option value="">-- Brak --</option>
+              <option value="custom">Wpisz procent...</option>
+            </select>
+            <input class="input" type="number" id="mathAdvancedInput" min="0" max="100" step="0.01" disabled style="margin-top:8px" placeholder="%">
           </div>
 
           <div class="row horizontal">
             <div>
               <div class="label">Język obcy — Podstawowy (%)</div>
-              <input class="input" type="number" id="langBasic" min="0" max="100" step="0.01" placeholder="Twój wynik">
+              <input class="input" type="number" id="langBasic" min="0" max="100" step="0.01" placeholder="%">
             </div>
             <div>
               <div class="label">Język obcy — Rozszerzony</div>
@@ -191,7 +82,7 @@ body{
                 <option value="">-- Brak --</option>
                 <option value="custom">Wpisz procent...</option>
               </select>
-              <input class="input" type="number" id="langAdvancedInput" min="0" max="100" step="0.01" disabled style="margin-top:8px" placeholder="Twój wynik">
+              <input class="input" type="number" id="langAdvancedInput" min="0" max="100" step="0.01" disabled style="margin-top:8px" placeholder="%">
             </div>
           </div>
 
@@ -201,23 +92,24 @@ body{
               <option value="">-- Brak --</option>
               <option value="custom">Wpisz procent...</option>
             </select>
-            <input class="input" type="number" id="langBilingualInput" min="0" max="100" step="0.01" disabled style="margin-top:8px" placeholder="Twój wynik">
+            <input class="input" type="number" id="langBilingualInput" min="0" max="100" step="0.01" disabled style="margin-top:8px" placeholder="%">
           </div>
 
-          <div class="label">Przedmioty dodatkowe (najlepszy z wybranych)</div>
-          <div class="extra-row"><select class="input extraSubject" onchange="updateOptions()"><option value="">-- Brak --</option><option value="fizyka">Fizyka</option><option value="chemia">Chemia</option><option value="informatyka">Informatyka</option><option value="biologia">Biologia</option></select><input class="input extraScore" type="number" min="0" max="100" step="0.01" disabled></div>
-          <div class="extra-row"><select class="input extraSubject" onchange="updateOptions()"><option value="">-- Brak --</option><option value="fizyka">Fizyka</option><option value="chemia">Chemia</option><option value="informatyka">Informatyka</option><option value="biologia">Biologia</option></select><input class="input extraScore" type="number" min="0" max="100" step="0.01" disabled></div>
+          <div class="label">Przedmiot dodatkowy (Wymagany co najmniej jeden)</div>
+          <div class="extra-row"><select class="input extraSubject" onchange="updateOptions()"><option value="">-- Wybierz przedmiot --</option><option value="fizyka">Fizyka</option><option value="chemia">Chemia</option><option value="informatyka">Informatyka</option><option value="biologia">Biologia</option></select><input class="input extraScore" type="number" min="0" max="100" step="0.01" disabled placeholder="%"></div>
+          <div class="extra-row"><select class="input extraSubject" onchange="updateOptions()"><option value="">-- Wybierz przedmiot --</option><option value="fizyka">Fizyka</option><option value="chemia">Chemia</option><option value="informatyka">Informatyka</option><option value="biologia">Biologia</option></select><input class="input extraScore" type="number" min="0" max="100" step="0.01" disabled placeholder="%"></div>
+          <div class="extra-row"><select class="input extraSubject" onchange="updateOptions()"><option value="">-- Wybierz przedmiot --</option><option value="fizyka">Fizyka</option><option value="chemia">Chemia</option><option value="informatyka">Informatyka</option><option value="biologia">Biologia</option></select><input class="input extraScore" type="number" min="0" max="100" step="0.01" disabled placeholder="%"></div>
+          <div class="extra-row"><select class="input extraSubject" onchange="updateOptions()"><option value="">-- Wybierz przedmiot --</option><option value="fizyka">Fizyka</option><option value="chemia">Chemia</option><option value="informatyka">Informatyka</option><option value="biologia">Biologia</option></select><input class="input extraScore" type="number" min="0" max="100" step="0.01" disabled placeholder="%"></div>
 
           <button class="btn" type="button" onclick="calculatePoints()">Oblicz punkty</button>
-
           <div id="errorMsg" class="error"></div>
           <div id="result" class="result"></div>
 
           <div class="legend">
-            <strong>Zasady punktacji:</strong> Wynik końcowy to suma punktów z trzech bloków. 
-            <strong>Matematyka:</strong> podstawa × 0.5 lub rozszerzenie × 1.0 (wybierany lepszy wynik). 
-            <strong>Język obcy:</strong> wynik z poziomu (podstawa × 0.5, rozszerzenie × 1.0 lub dwujęzyczny × 1.4) jest następnie mnożony przez wagę końcową 0.5. 
-            <strong>Przedmioty dodatkowe:</strong> pod uwagę brany jest tylko jeden, najwyżej punktowany przedmiot spośród wybranych, przemnożony przez jego wagę (Fizyka 0.9, Chemia 0.8, Informatyka 0.7, Biologia 0.6).
+            <strong>Zasady punktacji:</strong> Wynik końcowy to suma punktów z trzech obowiązkowych bloków: Matematyki, Języka obcego oraz jednego Przedmiotu dodatkowego.
+            <strong>Matematyka:</strong> wyższa z wartości: podstawa × 0.5 lub rozszerzenie × 1.0. 
+            <strong>Język obcy:</strong> wynik z poziomu (podstawa × 0.5, rozszerzenie × 1.0 lub dwujęzyczny × 1.4) mnożony przez wagę 0.5. 
+            <strong>Przedmioty dodatkowe:</strong> pod uwagę brany jest najlepszy wynik spośród wybranych, przemnożony przez wagę (Fizyka 0.9, Chemia 0.8, Informatyka 0.7, Biologia 0.6).
           </div>
         </div>
       </form>
@@ -246,26 +138,41 @@ function toggleCustomInput(sId, iId) {
 }
 
 function calculatePoints() {
-  document.getElementById("errorMsg").innerText = "";
+  const errorDiv = document.getElementById("errorMsg");
+  const resultDiv = document.getElementById("result");
+  errorDiv.innerText = "";
+  resultDiv.innerText = "";
+
+  // Pobieranie danych
   const mB = parseFloat(document.getElementById("mathBasic").value) || 0;
   const mA = parseFloat(document.getElementById("mathAdvancedInput").value) || 0;
-  const mathPoints = Math.max(mB * 0.5, mA * 1.0);
-
+  
   const lB = parseFloat(document.getElementById("langBasic").value) || 0;
   const lA = parseFloat(document.getElementById("langAdvancedInput").value) || 0;
   const lD = parseFloat(document.getElementById("langBilingualInput").value) || 0;
-  const langPoints = Math.max(lB * 0.5, lA * 1.0, lD * 1.4) * weights.jezyk;
 
-  let extraPointsArray = [];
+  let extras = [];
   const selects = document.querySelectorAll('.extraSubject');
   const scores = document.querySelectorAll('.extraScore');
+  
   selects.forEach((sel, i) => {
-    if(sel.value) extraPointsArray.push(parseFloat(scores[i].value || 0) * weights[sel.value]);
+    if(sel.value && scores[i].value !== "") {
+      extras.push(parseFloat(scores[i].value) * weights[sel.value]);
+    }
   });
-  const extraPoints = extraPointsArray.length ? Math.max(...extraPointsArray) : 0;
 
-  const total = mathPoints + langPoints + extraPoints;
-  document.getElementById("result").innerText = `Łączna liczba punktów: ${total.toFixed(2)}`;
+  // Walidacja - musi być co najmniej jeden przedmiot dodatkowy z wynikiem
+  if (extras.length === 0) {
+    errorDiv.innerText = "Błąd: Musisz wybrać i wpisać wynik z co najmniej jednego przedmiotu dodatkowego!";
+    return;
+  }
+
+  const mathPoints = Math.max(mB * 0.5, mA * 1.0);
+  const langPoints = Math.max(lB * 0.5, lA * 1.0, lD * 1.4) * weights.jezyk;
+  const bestExtra = Math.max(...extras);
+
+  const total = mathPoints + langPoints + bestExtra;
+  resultDiv.innerText = `Matematyka: ${mathPoints.toFixed(2)}\nJęzyk obcy: ${langPoints.toFixed(2)}\nPrzedmiot dodatkowy: ${bestExtra.toFixed(2)}\n\nSuma punktów: ${total.toFixed(2)}`;
 }
 
 window.addEventListener('DOMContentLoaded', updateOptions);
