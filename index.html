@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Kalkulator punktów na studia strażackie</title>
+<title>Kalkulator punktów - Wersja V2</title>
 
-<!-- Google Font -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
@@ -34,7 +33,6 @@ body{
   justify-content:center;
 }
 
-/* Layout */
 .app {
   width:100%;
   max-width:var(--max-width);
@@ -57,7 +55,6 @@ body{
   margin-top:6px;
 }
 
-/* Card */
 .card {
   background:var(--card);
   border-radius:var(--radius);
@@ -66,7 +63,6 @@ body{
   border: 1px solid rgba(15,23,42,0.04);
 }
 
-/* Form grid */
 .form-grid {
   display:grid;
   gap:12px;
@@ -100,14 +96,12 @@ body{
   box-shadow:0 4px 14px rgba(37,99,235,0.12);
 }
 
-/* Small note */
 .small-note {
   font-size:12px;
   color:var(--muted);
   margin-top:4px;
 }
 
-/* Extras */
 .extra-row {
   display:grid;
   grid-template-columns: 1fr 120px;
@@ -119,7 +113,6 @@ body{
   .extra-row { grid-template-columns: 1fr; }
 }
 
-/* Button */
 .btn {
   display:inline-block;
   width:100%;
@@ -135,7 +128,6 @@ body{
 }
 .btn:hover { background:var(--primary-600); }
 
-/* Results / Error */
 .result {
   margin-top:14px;
   padding:12px;
@@ -151,11 +143,14 @@ body{
   font-weight:600;
 }
 
-/* Footer small text */
 .legend {
-  margin-top:12px;
-  font-size:13px;
+  margin-top:16px;
+  font-size:12px;
   color:var(--muted);
+  line-height: 1.5;
+  border-top: 1px solid #f1f5f9;
+  padding-top: 12px;
+  /* Usunięto white-space: pre-line, aby tekst płynął naturalnie */
 }
 </style>
 </head>
@@ -163,13 +158,12 @@ body{
   <main class="app">
     <header class="header">
       <h1 class="title">Kalkulator punktów na studia strażackie</h1>
-      <div class="subtitle">Wpisz wyniki procentowe — kalkulator podpowie liczbę punktów</div>
+      <div class="subtitle">Wpisz wyniki procentowe — wersja z poprawioną legendą</div>
     </header>
 
     <section class="card">
       <form id="calcForm" onsubmit="return false;">
         <div class="form-grid">
-          <!-- Matematyka -->
           <div class="row">
             <div class="label">Matematyka — Podstawowa (%)</div>
             <input class="input" type="number" id="mathBasic" min="0" max="100" step="0.01" placeholder="Twój wynik">
@@ -183,11 +177,9 @@ body{
                 <option value="custom">Wpisz procent...</option>
               </select>
               <input class="input" type="number" id="mathAdvancedInput" min="0" max="100" step="0.01" disabled placeholder="Twój wynik">
-              <div class="small-note">Jeśli nie zdawałeś/zdawałaś rozszerzenia zostaw "-- Brak --".</div>
             </div>
           </div>
 
-          <!-- Język obcy -->
           <div class="row horizontal">
             <div>
               <div class="label">Język obcy — Podstawowy (%)</div>
@@ -212,60 +204,20 @@ body{
             <input class="input" type="number" id="langBilingualInput" min="0" max="100" step="0.01" disabled style="margin-top:8px" placeholder="Twój wynik">
           </div>
 
-          <!-- Przedmioty dodatkowe -->
-          <div class="label">Przedmioty dodatkowe (wybierz maks. 4)</div>
-
-          <div class="extra-row">
-            <select class="input extraSubject" onchange="updateOptions()">
-              <option value="">-- Brak --</option>
-              <option value="fizyka">Fizyka</option>
-              <option value="chemia">Chemia</option>
-              <option value="informatyka">Informatyka</option>
-              <option value="biologia">Biologia</option>
-            </select>
-            <input class="input extraScore" type="number" min="0" max="100" step="0.01" disabled placeholder="Twój wynik">
-          </div>
-
-          <div class="extra-row">
-            <select class="input extraSubject" onchange="updateOptions()">
-              <option value="">-- Brak --</option>
-              <option value="fizyka">Fizyka</option>
-              <option value="chemia">Chemia</option>
-              <option value="informatyka">Informatyka</option>
-              <option value="biologia">Biologia</option>
-            </select>
-            <input class="input extraScore" type="number" min="0" max="100" step="0.01" disabled placeholder="Twój wynik">
-          </div>
-
-          <div class="extra-row">
-            <select class="input extraSubject" onchange="updateOptions()">
-              <option value="">-- Brak --</option>
-              <option value="fizyka">Fizyka</option>
-              <option value="chemia">Chemia</option>
-              <option value="informatyka">Informatyka</option>
-              <option value="biologia">Biologia</option>
-            </select>
-            <input class="input extraScore" type="number" min="0" max="100" step="0.01" disabled placeholder="Twój wynik">
-          </div>
-
-          <div class="extra-row">
-            <select class="input extraSubject" onchange="updateOptions()">
-              <option value="">-- Brak --</option>
-              <option value="fizyka">Fizyka</option>
-              <option value="chemia">Chemia</option>
-              <option value="informatyka">Informatyka</option>
-              <option value="biologia">Biologia</option>
-            </select>
-            <input class="input extraScore" type="number" min="0" max="100" step="0.01" disabled placeholder="Twój wynik">
-          </div>
+          <div class="label">Przedmioty dodatkowe (najlepszy z wybranych)</div>
+          <div class="extra-row"><select class="input extraSubject" onchange="updateOptions()"><option value="">-- Brak --</option><option value="fizyka">Fizyka</option><option value="chemia">Chemia</option><option value="informatyka">Informatyka</option><option value="biologia">Biologia</option></select><input class="input extraScore" type="number" min="0" max="100" step="0.01" disabled></div>
+          <div class="extra-row"><select class="input extraSubject" onchange="updateOptions()"><option value="">-- Brak --</option><option value="fizyka">Fizyka</option><option value="chemia">Chemia</option><option value="informatyka">Informatyka</option><option value="biologia">Biologia</option></select><input class="input extraScore" type="number" min="0" max="100" step="0.01" disabled></div>
 
           <button class="btn" type="button" onclick="calculatePoints()">Oblicz punkty</button>
 
-          <div id="errorMsg" class="error" aria-live="polite"></div>
-          <div id="result" class="result" aria-live="polite"></div>
+          <div id="errorMsg" class="error"></div>
+          <div id="result" class="result"></div>
 
           <div class="legend">
-            Reguła: matematyka — maksimum z podstawy*0.5 oraz rozszerzenia*1.0; język — maksimum z podstawy*0.5, rozszerzenia*1.0, dwujęzycznego*1.4. Z przedmiotów dodatkowych brany jest [...]
+            <strong>Zasady punktacji:</strong> Wynik końcowy to suma punktów z trzech bloków. 
+            <strong>Matematyka:</strong> podstawa × 0.5 lub rozszerzenie × 1.0 (wybierany lepszy wynik). 
+            <strong>Język obcy:</strong> wynik z poziomu (podstawa × 0.5, rozszerzenie × 1.0 lub dwujęzyczny × 1.4) jest następnie mnożony przez wagę końcową 0.5. 
+            <strong>Przedmioty dodatkowe:</strong> pod uwagę brany jest tylko jeden, najwyżej punktowany przedmiot spośród wybranych, przemnożony przez jego wagę (Fizyka 0.9, Chemia 0.8, Informatyka 0.7, Biologia 0.6).
           </div>
         </div>
       </form>
@@ -273,155 +225,50 @@ body{
   </main>
 
 <script>
-// wagi
-const weights = {
-  matematyka: 1.0,
-  jezyk: 0.5,
-  chemia: 0.8,
-  fizyka: 0.9,
-  biologia: 0.6,
-  informatyka: 0.7
-};
+const weights = { matematyka: 1.0, jezyk: 0.5, chemia: 0.8, fizyka: 0.9, biologia: 0.6, informatyka: 0.7 };
 
 function updateOptions() {
   const selects = document.querySelectorAll('.extraSubject');
   const scores = document.querySelectorAll('.extraScore');
-  let chosen = [];
-
+  let chosen = Array.from(selects).map(s => s.value);
   selects.forEach((sel, i) => {
-    const isEmpty = sel.value === "";
-    scores[i].disabled = isEmpty;
-    if (isEmpty) scores[i].value = "";
-    chosen[i] = sel.value;
-  });
-
-  selects.forEach((sel, i) => {
-    const currentValue = sel.value;
-    for (let option of sel.options) {
-      if (option.value !== "" && chosen.includes(option.value) && option.value !== currentValue) {
-        option.disabled = true;
-      } else {
-        option.disabled = false;
-      }
-    }
+    scores[i].disabled = sel.value === "";
+    Array.from(sel.options).forEach(opt => {
+      if (opt.value !== "" && chosen.includes(opt.value) && opt.value !== sel.value) opt.disabled = true;
+      else opt.disabled = false;
+    });
   });
 }
 
-function toggleCustomInput(selectId, inputId) {
-  const sel = document.getElementById(selectId);
-  const input = document.getElementById(inputId);
-  if (!sel || !input) return;
-  input.disabled = sel.value !== 'custom';
-  if (input.disabled) input.value = "";
-  else input.focus();
-}
-
-function validatePercent(value) {
-  return !(isNaN(value) || value < 0 || value > 100);
+function toggleCustomInput(sId, iId) {
+  const s = document.getElementById(sId); const i = document.getElementById(iId);
+  i.disabled = s.value !== 'custom'; if (!i.disabled) i.focus();
 }
 
 function calculatePoints() {
   document.getElementById("errorMsg").innerText = "";
-  document.getElementById("result").innerText = "";
+  const mB = parseFloat(document.getElementById("mathBasic").value) || 0;
+  const mA = parseFloat(document.getElementById("mathAdvancedInput").value) || 0;
+  const mathPoints = Math.max(mB * 0.5, mA * 1.0);
 
-  // matematyka
-  const mathBasicRaw = document.getElementById("mathBasic").value;
-  const mathBasic = mathBasicRaw === "" ? NaN : parseFloat(mathBasicRaw);
-  if (isNaN(mathBasic) || mathBasic < 30 || mathBasic > 100) {
-    document.getElementById("errorMsg").innerText = "Wynik z matematyki podstawowej musi być liczbą z zakresu 30-100.";
-    return;
-  }
+  const lB = parseFloat(document.getElementById("langBasic").value) || 0;
+  const lA = parseFloat(document.getElementById("langAdvancedInput").value) || 0;
+  const lD = parseFloat(document.getElementById("langBilingualInput").value) || 0;
+  const langPoints = Math.max(lB * 0.5, lA * 1.0, lD * 1.4) * weights.jezyk;
 
-  const mathAdvSel = document.getElementById("mathAdvancedSelect").value;
-  const mathAdvancedInput = document.getElementById("mathAdvancedInput").value;
-  let mathAdvanced = 0;
-  if (mathAdvSel === 'custom') {
-    mathAdvanced = parseFloat(mathAdvancedInput);
-    if (!validatePercent(mathAdvanced)) {
-      document.getElementById("errorMsg").innerText = "Proszę wpisać poprawny wynik dla matematyki rozszerzonej (0-100).";
-      return;
-    }
-  }
-
-  const mathPoints = Math.max(mathBasic * 0.5, mathAdvanced * 1.0) * weights.matematyka;
-
-  // Język obcy
-  const langBasicRaw = document.getElementById("langBasic").value;
-  const langBasic = langBasicRaw === "" ? NaN : parseFloat(langBasicRaw);
-  if (isNaN(langBasic) || langBasic < 30 || langBasic > 100) {
-    document.getElementById("errorMsg").innerText = "Wynik z języka obcego (podstawowy) musi być liczbą z zakresu 30-100.";
-    return;
-  }
-
-  const langAdvSel = document.getElementById("langAdvancedSelect").value;
-  const langAdvancedInput = document.getElementById("langAdvancedInput").value;
-  let langAdvanced = 0;
-  if (langAdvSel === 'custom') {
-    langAdvanced = parseFloat(langAdvancedInput);
-    if (!validatePercent(langAdvanced)) {
-      document.getElementById("errorMsg").innerText = "Proszę wpisać poprawny wynik dla języka obcego (rozszerzony) (0-100).";
-      return;
-    }
-  }
-
-  const langBilSel = document.getElementById("langBilingualSelect").value;
-  const langBilingualInput = document.getElementById("langBilingualInput").value;
-  let langBilingual = 0;
-  if (langBilSel === 'custom') {
-    langBilingual = parseFloat(langBilingualInput);
-    if (!validatePercent(langBilingual)) {
-      document.getElementById("errorMsg").innerText = "Proszę wpisać poprawny wynik dla języka dwujęzycznego (0-100).";
-      return;
-    }
-  }
-
-  const langPoints = Math.max(
-    langBasic * 0.5,
-    langAdvanced * 1.0,
-    langBilingual * 1.4
-  ) * weights.jezyk;
-
-  // Przedmioty dodatkowe
+  let extraPointsArray = [];
   const selects = document.querySelectorAll('.extraSubject');
   const scores = document.querySelectorAll('.extraScore');
-  let extraPointsArray = [];
-
-  for (let i = 0; i < selects.length; i++) {
-    const subj = selects[i].value;
-    if(subj !== "") {
-      const scoreRaw = scores[i].value;
-      const score = scoreRaw === "" ? NaN : parseFloat(scoreRaw);
-      if(isNaN(score) || score < 0 || score > 100) {
-        document.getElementById("errorMsg").innerText = "Proszę wpisać poprawny wynik dla " + subj + " (0-100).";
-        return;
-      }
-      extraPointsArray.push({subject: subj, points: score * weights[subj]});
-    }
-  }
-
-  let extraPoints = 0;
-  let bestExtra = "";
-  if(extraPointsArray.length > 0) {
-    extraPointsArray.sort((a,b) => b.points - a.points);
-    bestExtra = extraPointsArray[0].subject;
-    extraPoints = extraPointsArray[0].points;
-  }
+  selects.forEach((sel, i) => {
+    if(sel.value) extraPointsArray.push(parseFloat(scores[i].value || 0) * weights[sel.value]);
+  });
+  const extraPoints = extraPointsArray.length ? Math.max(...extraPointsArray) : 0;
 
   const total = mathPoints + langPoints + extraPoints;
-
-  let resultText = `Punkty z matematyki: ${mathPoints.toFixed(2)}\n`;
-  resultText += `Punkty z języka obcego: ${langPoints.toFixed(2)}\n`;
-  if(bestExtra !== "") resultText += `Punkty z ${bestExtra}: ${extraPoints.toFixed(2)}\n`;
-  resultText += `Łączna liczba punktów: ${total.toFixed(2)}`;
-
-  document.getElementById("result").innerText = resultText;
+  document.getElementById("result").innerText = `Łączna liczba punktów: ${total.toFixed(2)}`;
 }
 
-// Init
-window.addEventListener('DOMContentLoaded', () => {
-  updateOptions();
-});
+window.addEventListener('DOMContentLoaded', updateOptions);
 </script>
-
 </body>
 </html>
