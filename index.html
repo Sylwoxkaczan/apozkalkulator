@@ -105,7 +105,17 @@ body{
             <input class="input" type="number" id="langBilingualInput" min="0" max="100" step="0.01" disabled style="margin-top:8px" placeholder="%">
           </div>
 
-          <div class="label">Przedmiot dodatkowy (Wymagany co najmniej jeden)</div>
+          <div class="label">Przedmioty dodatkowe (Wybierz najkorzystniejsze)</div>
+          <div class="extra-row">
+            <select class="input extraSubject" onchange="updateOptions()">
+              <option value="">-- Wybierz przedmiot --</option>
+              <option value="fizyka">Fizyka</option>
+              <option value="chemia">Chemia</option>
+              <option value="informatyka">Informatyka</option>
+              <option value="biologia">Biologia</option>
+            </select>
+            <input class="input extraScore" type="number" min="0" max="100" step="0.01" disabled placeholder="%">
+          </div>
           <div class="extra-row">
             <select class="input extraSubject" onchange="updateOptions()">
               <option value="">-- Wybierz przedmiot --</option>
@@ -173,7 +183,7 @@ body{
 
           <div class="legend">
             <strong>Zasady punktacji:</strong> Aby kandydować, musisz mieć min. 30% z podstawy.<br>
-            <strong>Matematyka:</strong> Wybierana jest najkorzystniejsza punktacja z wariantów: podstawa × 0.5 lub rozszerzenie × 1.0.<br>
+            <strong>Matematyka:</strong> Wybierana jest najkorzystniejsza punktacja: podstawa × 0.5 lub rozszerzenie × 1.0.<br>
             <strong>Język obcy:</strong> Wybierana jest najkorzystniejsza punktacja z poziomów (podstawa × 0.5, rozszerzenie × 1.0 lub dwujęzyczny × 1.4) mnożona przez wagę 0.5.<br>
             <strong>Przedmioty dodatkowe:</strong> Brany jest pod uwagę najkorzystniejszy wynik spośród wybranych × waga (Fizyka 0.9, Chemia 0.8, Informatyka 0.7, Biologia 0.6).
           </div>
@@ -240,12 +250,14 @@ function calculatePoints() {
 
   let extras = [];
   document.querySelectorAll('.extraSubject').forEach((sel, i) => {
-    const score = document.querySelectorAll('.extraScore')[i].value;
-    if(sel.value && score !== "") extras.push(parseFloat(score) * weights[sel.value]);
+    const scoreField = document.querySelectorAll('.extraScore')[i];
+    if(sel.value && scoreField.value !== "") {
+      extras.push(parseFloat(scoreField.value) * weights[sel.value]);
+    }
   });
 
   if (extras.length === 0) {
-    errorDiv.innerText = "Błąd: Musisz wybrać przedmiot dodatkowy!";
+    errorDiv.innerText = "Błąd: Musisz wybrać co najmniej jeden przedmiot dodatkowy!";
     errorDiv.style.display = "block";
     return;
   }
