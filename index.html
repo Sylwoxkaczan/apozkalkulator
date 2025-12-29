@@ -68,29 +68,29 @@ body{
         <div class="form-grid">
           
           <div class="row">
-            <div class="label">Matematyka — Podstawowa (%)</div>
-            <input class="input" type="number" id="mathBasic" min="0" max="100" step="0.01" placeholder="Wynik matury">
+            <div class="label">Matematyka — Podstawowa</div>
+            <input class="input" type="number" id="mathBasic" min="0" max="100" step="0.01" placeholder="%">
           </div>
           
           <div class="row">
             <div class="label">Matematyka — Rozszerzona</div>
             <select class="input" id="mathAdvancedSelect" onchange="toggleCustomInput('mathAdvancedSelect','mathAdvancedInput')">
               <option value="">-- Brak --</option>
-              <option value="custom">Wpisz procent...</option>
+              <option value="custom">Wpisz wynik...</option>
             </select>
             <input class="input" type="number" id="mathAdvancedInput" min="0" max="100" step="0.01" disabled style="margin-top:8px" placeholder="%">
           </div>
 
           <div class="row horizontal">
             <div>
-              <div class="label">Język obcy — Podstawowy (%)</div>
+              <div class="label">Język obcy — Podstawowy</div>
               <input class="input" type="number" id="langBasic" min="0" max="100" step="0.01" placeholder="%">
             </div>
             <div>
               <div class="label">Język obcy — Rozszerzony</div>
               <select class="input" id="langAdvancedSelect" onchange="toggleCustomInput('langAdvancedSelect','langAdvancedInput')">
                 <option value="">-- Brak --</option>
-                <option value="custom">Wpisz procent...</option>
+                <option value="custom">Wpisz wynik...</option>
               </select>
               <input class="input" type="number" id="langAdvancedInput" min="0" max="100" step="0.01" disabled style="margin-top:8px" placeholder="%">
             </div>
@@ -100,7 +100,7 @@ body{
             <div class="label">Język obcy — Dwujęzyczny</div>
             <select class="input" id="langBilingualSelect" onchange="toggleCustomInput('langBilingualSelect','langBilingualInput')">
               <option value="">-- Brak --</option>
-              <option value="custom">Wpisz procent...</option>
+              <option value="custom">Wpisz wynik...</option>
             </select>
             <input class="input" type="number" id="langBilingualInput" min="0" max="100" step="0.01" disabled style="margin-top:8px" placeholder="%">
           </div>
