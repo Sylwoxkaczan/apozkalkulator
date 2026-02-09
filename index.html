@@ -242,8 +242,14 @@ function calculatePoints() {
   const mBVal = document.getElementById("mathBasic").value;
   const lBVal = document.getElementById("langBasic").value;
   
-  if (mBVal === "" || lBVal === "") {
-    errorDiv.innerText = "Błąd: Wpisz wyniki z podstawowej matematyki i języka obcego.";
+  if (mBVal === "") {
+    errorDiv.innerText = "Błąd: Wpisz wynik z matematyki podstawowej.";
+    errorDiv.style.display = "block";
+    return;
+  }
+
+  if (lBVal === "") {
+    errorDiv.innerText = "Błąd: Wpisz wynik z języka obcego.";
     errorDiv.style.display = "block";
     return;
   }
