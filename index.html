@@ -205,7 +205,12 @@ function updateOptions() {
   const scores = document.querySelectorAll('.extraScore');
   let chosen = Array.from(selects).map(s => s.value);
   selects.forEach((sel, i) => {
-    scores[i].disabled = sel.value === "";
+    if (sel.value === "") {
+      scores[i].disabled = true;
+      scores[i].value = "";
+    } else {
+      scores[i].disabled = false;
+    }
     Array.from(sel.options).forEach(opt => {
       if (opt.value !== "" && chosen.includes(opt.value) && opt.value !== sel.value) opt.disabled = true;
       else opt.disabled = false;
@@ -214,8 +219,15 @@ function updateOptions() {
 }
 
 function toggleCustomInput(sId, iId) {
-  const s = document.getElementById(sId); const i = document.getElementById(iId);
-  i.disabled = s.value !== 'custom'; if (!i.disabled) i.focus();
+  const s = document.getElementById(sId);
+  const i = document.getElementById(iId);
+  if (s.value !== 'custom') {
+    i.disabled = true;
+    i.value = "";
+  } else {
+    i.disabled = false;
+    i.focus();
+  }
 }
 
 function calculatePoints() {
