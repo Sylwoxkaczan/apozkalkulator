@@ -247,7 +247,6 @@ function calculatePoints() {
     errorDiv.style.display = "block";
     return;
   }
-
   if (lBVal === "") {
     errorDiv.innerText = "Błąd: Wpisz wynik z języka obcego.";
     errorDiv.style.display = "block";
@@ -259,6 +258,32 @@ function calculatePoints() {
   const mA = parseFloat(document.getElementById("mathAdvancedInput").value) || 0;
   const lA = parseFloat(document.getElementById("langAdvancedInput").value) || 0;
   const lD = parseFloat(document.getElementById("langBilingualInput").value) || 0;
+
+  // Zbieranie wszystkich błędów zakresu
+  let rangeErrors = [];
+
+  if (mB > 100 || mB < 0) rangeErrors.push("Matematyka podstawowa");
+  if (document.getElementById("mathAdvancedSelect").value === "custom" && (mA > 100 || mA < 0)) rangeErrors.push("Matematyka rozszerzona");
+  if (lB > 100 || lB < 0) rangeErrors.push("Język obcy podstawowy");
+  if (document.getElementById("langAdvancedSelect").value === "custom" && (lA > 100 || lA < 0)) rangeErrors.push("Język obcy rozszerzony");
+  if (document.getElementById("langBilingualSelect").value === "custom" && (lD > 100 || lD < 0)) rangeErrors.push("Język obcy dwujęzyczny");
+
+  document.querySelectorAll('.extraSubject').forEach((sel, i) => {
+    const scoreField = document.querySelectorAll('.extraScore')[i];
+    if(sel.value && scoreField.value !== "") {
+      const val = parseFloat(scoreField.value);
+      if (val > 100 || val < 0) {
+        const subjectName = sel.options[sel.selectedIndex].text;
+        if (!rangeErrors.includes(subjectName)) rangeErrors.push(subjectName);
+      }
+    }
+  });
+
+  if (rangeErrors.length > 0) {
+    errorDiv.innerHTML = "Błąd: Wyniki w następujących polach przekraczają 100%:<br>• " + rangeErrors.join("<br>• ");
+    errorDiv.style.display = "block";
+    return;
+  }
 
   if (mB < 30 || lB < 30) {
     errorDiv.innerText = "Błąd: Wynik poniżej 30% oznacza niezdany egzamin.";
